@@ -1,0 +1,6 @@
+cohere
+praw
+tqdm
+python-dotenv
+html2image
+Pillow

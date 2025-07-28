@@ -1,0 +1,25 @@
+Here is a detailed profile analysis of the GitHub user, Kritisri02:
+## Name:
+Kritisri02
+## Bio:
+Kritisri02 is a B.Tech student in Computer Science with a focus on AI and Machine Learning. They identify as a full-stack developer skilled in the MERN stack and an OpenAI enthusiast. They are passionate about problem-solving and creating innovative solutions.
+## Location:
+None specified.
+## Development Interests:
+Kritisri02's repositories showcase a diverse range of interests, including full-stack web development, AI-powered health assistants, expense tracking applications, and educational platforms. They seem intrigued by the potential of AI and are keen on exploring its applications.
+## Open Source Involvement:
+The user has not actively engaged in open-source projects beyond their own repositories. Their repositories are mostly individual projects or assignments, with one repository, "compassion.net," garnering one star.
+## Technical Strengths:
+- **Languages:** Proficient in JavaScript, Python, and HTML.
+- **Frameworks:** Experience with React (EduTrack) and the MERN stack.
+- **Tools:** Familiarity with Firebase for authentication and security.
+- **AI/ML:** Demonstrates an interest in AI with a project focused on a health assistant and OpenAI enthusiasm.
+## Collaboration Style:
+Kritisri02 appears to be a solo developer, working independently on various projects. Their repositories do not show contributions from other users, indicating a preference for individual contributions at this stage.
+## Notable Repositories:
+- **EduTrack:** A responsive React app for student management with secure Firebase login and mobile optimization.
+- **Expense Tracker:** A Python CLI application for expense management with features like adding, viewing, and removing expenses.
+- **ai_health_assistant:** An intriguing Python project focused on AI and health assistance, though lacking a description for further context.
+## Summary:
+Kritisri02 is a talented developer with a diverse skill set and a passion for AI. They have experience in full-stack development, particularly with the MERN stack, and have created innovative projects. While their open-source involvement is limited, their repositories demonstrate a strong foundation and a keen interest in exploring new technologies. Kritisri02 shows potential for growth and contributions in the AI and web development spaces.
+This profile highlights Kritisri02's strengths, interests, and areas for growth, providing a comprehensive overview of their GitHub presence.
