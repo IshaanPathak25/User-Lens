@@ -17,7 +17,7 @@ reddit = praw.Reddit(
 def extract_username(profile_url: str) -> str:
     return profile_url.rstrip('/').split('/')[-1]
 
-def scrape_user_data(profile_url: str, limit=100):
+def scrape_reddit_user(profile_url: str, limit=100):
     username = extract_username(profile_url)
     redditor = reddit.redditor(username)
 
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python reddit_scraper.py <reddit_profile_url>")
     else:
-        scrape_user_data(sys.argv[1])
+        scrape_reddit_user(sys.argv[1])

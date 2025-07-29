@@ -106,7 +106,7 @@ def estimate_block_height(draw, title, content, title_font, body_font, max_width
     return height + LINE_SPACING * 2
 
 def generate_visual_persona(username):
-    input_txt = f"Reddit/output/Script/{username}_persona.txt"
+    input_txt = f"Reddit/output/Script/{username}_reddit_profile.txt"
     output_img = f"Reddit/output/Image/{username}_persona.png"
 
     if not os.path.exists(input_txt):

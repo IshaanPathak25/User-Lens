@@ -1,0 +1,81 @@
+## Name: IshaanPathak25
+
+
+### ## Bio
+
+IshaanPathak25 is a competitive Python and Full Stack developer based in Kanpur, India, who is passionate about solving
+real-world problems with efficient code. With a diverse set of skills, they aim to create impactful solutions and
+contribute to open-source projects.
+
+
+### ## Location
+
+Kanpur, Uttar Pradesh, India
+
+
+### ## Development Interests
+
+- Full Stack Development: IshaanPathak25 has a strong interest in full-stack development, as evidenced by their work on
+projects like "e-commerce-backend," a Spring Boot and MongoDB-based backend system, and "SpendWise," a full-stack
+expense tracker app with a React frontend and Node.js/Express backend.
+
+- Data Structures and Algorithms: They also demonstrate a solid understanding of data structures and algorithms, with
+repositories dedicated to CPU scheduling algorithms and DSA codes in C and Java.
+
+- Artificial Intelligence: Projects like "InterVista," an AI-based mock interview evaluator, and "ReddiScope," an NLP
+tool for generating user personas, showcase their interest and skills in artificial intelligence and its applications.
+
+
+### ## Open Source Involvement
+
+While most of their repositories are solo projects, IshaanPathak25 has shown a willingness to engage with the open-
+source community through their contributions to LeetCode solutions and their active use of GitHub to share their work.
+They have also made their projects open source, allowing others to learn from and contribute to their code.
+
+
+### ## Technical Strengths
+
+- Programming Languages: Python, Java, JavaScript, C, and HTML are among the languages they are proficient in,
+demonstrating a versatile skill set.
+
+- Web Development: They have a strong grasp of web development, including front-end frameworks like React and back-end
+frameworks like Node.js/Express and Spring Boot.
+
+- Data Structures and Algorithms: IshaanPathak25 has a solid foundation in DSA, as seen in their dedicated repositories
+and project implementations.
+
+- Artificial Intelligence: Their work with AI, particularly in NLP and persona modeling, showcases an advanced skill set
+and a forward-thinking approach to development.
+
+
+### ## Collaboration Style
+
+IshaanPathak25 appears to be a self-driven and independent developer who takes initiative in creating and sharing
+projects. Their solo projects demonstrate a capacity for self-management and a strong work ethic. However, they also
+show a willingness to engage with the open-source community and have made their projects accessible for potential
+collaboration.
+
+
+### ## Notable Repositories
+
+- **Chart-Generator**: A real-time chart generation web application that offers users customization options, showcasing
+their web development skills and focus on user experience.
+
+- **CompassionNet**: An NGO donation platform developed during their college years, demonstrating an early interest in
+web development and social impact projects.
+
+- **ReddiScope**: An innovative NLP tool that utilizes Reddit data and LLMs to generate structured user personas,
+highlighting their advanced technical skills and creativity.
+
+- **SpendWise**: A full-stack expense tracker app with a modern, responsive design, showcasing their ability to create
+user-friendly, full-featured applications.
+
+
+### ## Summary
+
+IshaanPathak25 is a versatile and skilled developer with a competitive spirit and a passion for problem-solving. They
+possess a diverse set of technical skills, ranging from web development to AI, and are committed to sharing their
+knowledge through open-source projects. With a strong foundation in data structures and algorithms and a creative
+approach to AI applications, they are well-equipped to tackle a wide range of development challenges. The user's
+collaboration style indicates a self-motivated and independent mindset, balanced with a willingness to engage with the
+wider developer community.

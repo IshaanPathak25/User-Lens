@@ -94,10 +94,10 @@ Reddit Activity:
         formatted = "\n".join([f"{k}:\n{v.strip()}\n" for k, v in sections.items() if v.strip()])
 
         os.makedirs("Reddit/output", exist_ok=True)
-        with open(f"Reddit/output/Script/{username}_persona.txt", "w", encoding="utf-8") as f:
+        with open(f"Reddit/output/Script/{username}_reddit_profile.txt", "w", encoding="utf-8") as f:
             f.write(formatted)
 
-        print(f"✅ Persona saved to Reddit/output/Script/{username}_persona.txt")
+        print(f"✅ Persona saved to Reddit/output/Script/{username}_reddit_profile.txt")
 
     except Exception as e:
         print(f"❌ Error during Cohere generation: {e}")
