@@ -1,7 +1,7 @@
 import os
 import subprocess
-from persona_generator import generate_persona
-from visual_generator import generate_visual_persona
+from .persona_generator import generate_persona
+from .visual_generator import generate_visual_persona
 
 def extract_username(url):
     return url.rstrip("/").split("/")[-1]
@@ -37,3 +37,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+def run_reddit_pipeline(username):
+    # Call the scraper
+    from .reddit_scraper import scrape_reddit_user
+    scrape_reddit_user(username)
+
+    # Call the persona generator
+    from .persona_generator import generate_persona
+    generate_persona(username)
+
+    # Call the visual generator
+    from .visual_generator import generate_visual_persona
+    generate_visual_persona(username)

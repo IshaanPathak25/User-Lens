@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Combined Insight</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h1>🔍 Combined Insight</h1>
+    <form id="analyze-form" method="POST" action="/analyze">
+      <label for="platform">Choose Platform:</label>
+      <br />
+      <select name="platform" id="platform" required>
+        <option value="reddit">Reddit</option>
+        <option value="github">GitHub</option>
+      </select>
+      <br />
+      <br />
+
+      <label for="url">Enter Profile URL:</label><br />
+      <input type="text" name="url" required /><br /><br />
+
+      <button type="submit">Analyze</button>
+    </form>
+  </body>
+</html>
