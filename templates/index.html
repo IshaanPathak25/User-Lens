@@ -25,5 +25,12 @@
 
       <button type="submit">Analyze</button>
     </form>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      <p class="error">{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
   </body>
 </html>

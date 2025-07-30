@@ -55,15 +55,15 @@ def analyze_github_profile(username):
     prompt = f"""
 You are an expert GitHub profile analyst. Based on the GitHub user's activity and public repositories, generate a detailed profile including these sections:
 
-## Name (Use GitHub username only: {username})
-## Bio
-## Location
-## Development Interests
-## Open Source Involvement
-## Technical Strengths
-## Collaboration Style
-## Notable Repositories (summarize briefly with impact)
-## Summary
+- Name (Use GitHub username only: {username})
+- Bio
+- Location
+- Development Interests
+- Open Source Involvement
+- Technical Strengths
+- Collaboration Style
+- Notable Repositories (summarize briefly with impact)
+- Summary
 
 GitHub Bio: {bio}
 Location: {location}
