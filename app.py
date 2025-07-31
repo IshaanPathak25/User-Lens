@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
+from flask import send_file
 from Reddit.main import run_reddit_pipeline
 from Github.main import run_github_pipeline
 from jinja2 import StrictUndefined
@@ -8,10 +9,13 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 app.jinja_env.undefined = StrictUndefined
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
 
+
+# Analyze user profile
 @app.route("/analyze", methods=["POST"])
 def analyze():
     platform = request.form.get("platform")
@@ -54,12 +58,39 @@ def analyze():
         with open(result_path, "r", encoding="utf-8") as f:
             result_text = f.read()
 
-        return render_template("result.html", result=result_text)
+        return render_template("result.html", result=result_text, username=username, platform=platform.capitalize())
 
     except Exception as e:
         print("❌ ERROR:", e)  # Debug log
         flash(f"❌ {platform.capitalize()} Analysis Error: {str(e)}")
         return redirect(url_for("home"))
+    
+# Download persona image
+
+@app.route("/download_persona", methods=["POST"])
+def download_persona():
+    platform = request.form.get("platform")
+    username = request.form.get("username")
+
+    try:
+        if platform == "Reddit":
+            from Reddit.visual_generator import generate_visual_persona
+            generate_visual_persona(username)
+            filepath = f"Reddit/output/Image/{username}_reddit_persona.png"
+        elif platform == "GitHub":
+            from Github.visual_generator import generate_visual_persona
+            generate_visual_persona(username)
+            filepath = f"Github/output/Image/{username}_github_persona.png"
+        else:
+            flash("❌ Invalid platform selected.")
+            return redirect(url_for("home"))
+
+        return send_file(filepath, as_attachment=True)
+
+    except Exception as e:
+        flash(f"❌ Failed to generate or download persona image: {e}")
+        return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
