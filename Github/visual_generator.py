@@ -1,79 +1,181 @@
-import os
 from PIL import Image, ImageDraw, ImageFont
+import os
 import textwrap
-import json
 
-def wrap_text(text, font, max_width):
+# === Configuration ===
+FONT_PATH = "arial.ttf"
+TITLE_SIZE = 48
+SECTION_TITLE_SIZE = 36
+BODY_SIZE = 24
+MARGIN = 60
+COLUMN_GAP = 80
+LINE_SPACING = 12
+CANVAS_WIDTH = 1600
+BG_COLOR = "white"
+HEADER_COLOR = "#1f4e79"
+
+def extract_sections(text):
+    sections = {}
+    current = None
+    buffer = []
+
+    for line in text.splitlines():
+        if ":" in line and line.strip().endswith(":"):
+            if current and buffer:
+                sections[current] = "\n".join(buffer).strip()
+                buffer = []
+            current = line.strip().replace(":", "")
+        elif current:
+            buffer.append(line.strip())
+    if current and buffer:
+        sections[current] = "\n".join(buffer).strip()
+    return sections
+
+def wrap_text_by_width(draw, text, font, max_width):
     lines = []
-    if not text:
-        return [""]
     for paragraph in text.split("\n"):
-        line = []
+        line = ""
         for word in paragraph.split():
-            test_line = " ".join(line + [word])
-            if font.getsize(test_line)[0] <= max_width:
-                line.append(word)
+            test_line = f"{line} {word}".strip()
+            width = draw.textlength(test_line, font=font)
+            if width <= max_width:
+                line = test_line
             else:
-                lines.append(" ".join(line))
-                line = [word]
-        lines.append(" ".join(line))
+                lines.append(line)
+                line = word
+        if line:
+            lines.append(line)
     return lines
 
-def draw_section(draw, title, content, font_title, font_text, x, y, max_width, spacing=10):
-    draw.text((x, y), title, font=font_title, fill="black")
-    y += font_title.getsize(title)[1] + 5
-    lines = wrap_text(content, font_text, max_width)
-    for line in lines:
-        draw.text((x, y), line, font=font_text, fill="black")
-        y += font_text.getsize(line)[1] + spacing
-    return y + spacing
+def draw_wrapped_block(draw, x, y, title, content, title_font, body_font, max_width):
+    draw.text((x, y), title, font=title_font, fill=HEADER_COLOR)
+    y += title_font.getbbox(title)[3] + LINE_SPACING
 
-def generate_visual_persona(username):
-    data_path = f"Github/output/Script/{username}_github_profile.txt"
-    if not os.path.exists(data_path):
-        print(f"❌ Text profile not found at: {data_path}")
+    if isinstance(content, list):
+        for bullet in content:
+            wrapped = wrap_text_by_width(draw, bullet, body_font, max_width - 40)
+            draw.text((x + 20, y), "•", font=body_font, fill="black")
+            y += 0
+            for i, line in enumerate(wrapped):
+                indent = 40 if i > 0 else 30
+                draw.text((x + indent, y), line, font=body_font, fill="black")
+                y += body_font.getbbox(line)[3] + LINE_SPACING
+    else:
+        lines = wrap_text_by_width(draw, content, body_font, max_width)
+        for line in lines:
+            draw.text((x, y), line, font=body_font, fill="black")
+            y += body_font.getbbox(line)[3] + LINE_SPACING
+
+    return y + LINE_SPACING * 2
+
+def clean_quotes(raw_block):
+    return [q.strip().strip('"“”') for q in raw_block.split(">") if len(q.strip()) > 30]
+
+def calculate_required_height(sections, draw, title_font, header_font, body_font, col_width):
+    y = MARGIN + title_font.getbbox("User Persona")[3] + LINE_SPACING * 3 + 10
+    left_height = 0
+    right_height = 0
+
+    left_keys = ["Name", "Location", "Bio", "Development Interests", "Open Source Involvement"]
+    right_keys = ["Technical Strengths", "Collaboration Style", "Notable Repositories", "Summary"]
+
+    for key in left_keys:
+        content = sections.get(key, "—")
+        left_height += estimate_block_height(draw, key, content, header_font, body_font, col_width)
+
+    for key in right_keys:
+        content = sections.get(key, "")
+        if key == "Collaboration Style":
+            content += "\n" + sections.get("Collaboration Style", "")
+        if key == "Notable Repositories":
+            quotes = clean_quotes(content)
+            content = quotes
+        right_height += estimate_block_height(draw, key, content, header_font, body_font, col_width)
+
+    return max(left_height, right_height) + y + MARGIN
+
+def estimate_block_height(draw, title, content, title_font, body_font, max_width):
+    height = title_font.getbbox(title)[3] + LINE_SPACING
+    if isinstance(content, list):
+        for bullet in content:
+            wrapped = wrap_text_by_width(draw, bullet, body_font, max_width - 40)
+            height += len(wrapped) * (body_font.getbbox("A")[3] + LINE_SPACING + 10) 
+    else:
+        lines = wrap_text_by_width(draw, content, body_font, max_width)
+        height += len(lines) * (body_font.getbbox("A")[3] + LINE_SPACING + 10)
+    return height + LINE_SPACING * 2
+
+def generate_visual_persona(username, output_path = None):
+    if not output_path:
+        output_path = f"Github/output/Image/{username}_github_persona.png"
+
+    input_txt = f"Github/output/Script/{username}_github_profile.txt"
+    
+    if not os.path.exists(input_txt):
+        print(f"❌ Persona text not found: {input_txt}")
         return
 
-    with open(data_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    with open(input_txt, "r", encoding="utf-8") as f:
+        raw_text = f.read()
 
-    sections = {}
-    current_title = None
-    for line in content.splitlines():
-        if line.strip().startswith("##"):
-            current_title = line.strip().replace("##", "").strip()
-            sections[current_title] = ""
-        elif current_title:
-            sections[current_title] += line.strip() + " "
-
+    sections = extract_sections(raw_text)
+    
     # Load fonts
-    font_path = "arial.ttf"  # Adjust this to your system
-    font_title = ImageFont.truetype(font_path, 28)
-    font_text = ImageFont.truetype(font_path, 20)
+    try:
+        title_font = ImageFont.truetype(FONT_PATH, TITLE_SIZE)
+        header_font = ImageFont.truetype(FONT_PATH, SECTION_TITLE_SIZE)
+        body_font = ImageFont.truetype(FONT_PATH, BODY_SIZE)
+    except:
+        print("⚠️ Using default font fallback")
+        title_font = header_font = body_font = ImageFont.load_default()
+        
+    # Dummy draw object for measurement
+    dummy_img = Image.new("RGB", (CANVAS_WIDTH, 2000))
+    dummy_draw = ImageDraw.Draw(dummy_img)
+    
+    # Calculate dynamic height
+    col_width = (CANVAS_WIDTH - 3 * MARGIN) // 2
+    required_height = calculate_required_height(sections, dummy_draw, title_font, header_font, body_font, col_width)
+    
+    # Create final image
+    img = Image.new("RGB", (CANVAS_WIDTH, required_height), color=BG_COLOR)
+    draw = ImageDraw.Draw(img)
+    
+    # Title
+    y = MARGIN
+    draw.text((MARGIN, y), f"User Persona: {username}", font=title_font, fill="black")
+    y += title_font.getbbox(username)[3] + LINE_SPACING * 3
 
-    image_width = 1200
-    max_text_width = image_width - 80
-    y = 40
+    left_x = MARGIN
+    right_x = CANVAS_WIDTH // 2 + COLUMN_GAP // 2
+    left_y = right_y = y
 
-    # Estimate height
-    total_height = 200
-    for section in sections.values():
-        lines = wrap_text(section, font_text, max_text_width)
-        total_height += len(lines) * 30 + 60
+    left_keys = [
+        ("🧑 Name", "Name"),
+        ("📝 Location", "Location"),
+        ("🎯 Bio", "Bio"),
+        ("📌 Development Interests", "Development Interests"),
+        ("💢 Open Source Involvement", "Open Source Involvement")
+    ]
 
-    image = Image.new("RGB", (image_width, total_height), "white")
-    draw = ImageDraw.Draw(image)
+    right_keys = [
+        ("💡 Technical Strengths", "Technical Strengths"),
+        ("🎙️ Collaboration Style", "Collaboration Style"),
+        ("💬 Notable Repositories", "Notable Repositories")
+    ]
 
-    # Draw title
-    draw.text((40, y), f"GitHub Persona: {username}", font=font_title, fill="black")
-    y += 60
+    for title, key in left_keys:
+        content = sections.get(key, "—")
+        left_y = draw_wrapped_block(draw, left_x, left_y, title, content, header_font, body_font, col_width)
 
-    # Draw each section
-    for title, content in sections.items():
-        y = draw_section(draw, title, content.strip(), font_title, font_text, 40, y, max_text_width)
-
-    # Save image
-    os.makedirs(f"Github/output/Image", exist_ok=True)
-    output_path = f"Github/output/Image/{username}_github_persona.png"
-    image.save(output_path)
-    print(f"✅ GitHub persona image saved to {output_path}")
+    for title, key in right_keys:
+        content = sections.get(key, "")
+        if key == "Collaboration Style":
+            style = sections.get("Collaboration Style", "")
+            content += f"\n{style}".strip()
+        if key == "Notable Repositories":
+            content = clean_quotes(content)
+        right_y = draw_wrapped_block(draw, right_x, right_y, title, content, header_font, body_font, col_width)
+        
+    img.save(output_path, "PNG")
+    print(f"✅ GitHub Persona image generated at: {output_path}")

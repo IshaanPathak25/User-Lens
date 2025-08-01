@@ -28,7 +28,7 @@ def analyze():
     try:
         # Safely extract username
         if platform == "reddit":
-            if "/user/" not in url:
+            if "reddit.com/user/" not in url:
                 flash("❌ Invalid Reddit URL format.")
                 return redirect(url_for("home"))
             username = url.strip().split("/user/")[-1].strip("/")
@@ -43,7 +43,7 @@ def analyze():
             username = url.strip().split("github.com/")[-1].strip("/")
 
             run_github_pipeline(username)
-            result_path = f"Github/output/{username}_github_profile.txt"
+            result_path = f"Github/output/Script/{username}_github_profile.txt"
 
         else:
             flash("❌ Invalid platform selected.")
@@ -73,19 +73,29 @@ def download_persona():
     username = request.form.get("username")
 
     try:
+        downloads_dir = os.path.join(os.path.expanduser("~"), "Downloads")
+        
         if platform == "Reddit":
             from Reddit.visual_generator import generate_visual_persona
-            generate_visual_persona(username)
-            filepath = f"Reddit/output/Image/{username}_reddit_persona.png"
+            output_path = os.path.join(downloads_dir, f"{username}_reddit_persona.png")
+            generate_visual_persona(username, output_path)
+            #filepath = f"Reddit/output/Image/{username}_reddit_persona.png"
+            
         elif platform == "GitHub":
             from Github.visual_generator import generate_visual_persona
-            generate_visual_persona(username)
-            filepath = f"Github/output/Image/{username}_github_persona.png"
+            output_path = os.path.join(downloads_dir, f"{username}_github_persona.png")
+            generate_visual_persona(username, output_path)
+            #filepath = f"Github/output/Image/{username}_github_persona.png"
+
         else:
             flash("❌ Invalid platform selected.")
             return redirect(url_for("home"))
+        
+        if not os.path.exists(output_path):
+            flash(f"❌ Persona image for {username} could not be generated. Please try again.")
+            return redirect(url_for("home"))
 
-        return send_file(filepath, as_attachment=True)
+        return send_file(output_path, as_attachment=True)
 
     except Exception as e:
         flash(f"❌ Failed to generate or download persona image: {e}")

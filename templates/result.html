@@ -18,7 +18,7 @@
         <!-- Button to download persona image -->
         <form method="POST" action="{{ url_for('download_persona') }}">
           <input type="hidden" name="username" value="{{ username }}">
-          <input type="hidden" name="platform" value="{{ platform }}">
+          <input type="hidden" name="platform" value="{{ platform.lower() }}">
           <button type="submit" class="download-btn">⬇️ Download Persona Image</button>
         </form>
       </div>

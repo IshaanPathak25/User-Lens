@@ -9,7 +9,7 @@ load_dotenv()
 COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 client = cohere.Client(COHERE_API_KEY)
 
-WRAP_WIDTH = 120  # Max characters per line
+WRAP_WIDTH = 155  # Max characters per line
 
 def format_profile_output(raw_text):
     """Format output with markdown-style headers and wrapped content."""
@@ -87,8 +87,8 @@ Repositories:
 
         formatted = format_profile_output(raw_output)
 
-        os.makedirs("Github/output", exist_ok=True)
-        output_path = f"Github/output/{username}_github_profile.txt"
+        os.makedirs("Github/output/Script", exist_ok=True)
+        output_path = f"Github/output/Script/{username}_github_profile.txt"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(formatted)
 

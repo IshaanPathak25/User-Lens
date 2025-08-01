@@ -105,10 +105,12 @@ def estimate_block_height(draw, title, content, title_font, body_font, max_width
         height += len(lines) * (body_font.getbbox("A")[3] + LINE_SPACING + 10)
     return height + LINE_SPACING * 2
 
-def generate_visual_persona(username):
-    input_txt = f"Reddit/output/Script/{username}_reddit_profile.txt"
-    output_img = f"Reddit/output/Image/{username}_persona.png"
+def generate_visual_persona(username, output_path = None):
+    if not output_path:
+        output_path = f"Reddit/output/Image/{username}_reddit_persona.png"
 
+    input_txt = f"Reddit/output/Script/{username}_reddit_profile.txt"
+    
     if not os.path.exists(input_txt):
         print(f"❌ Persona text not found: {input_txt}")
         return
@@ -175,4 +177,5 @@ def generate_visual_persona(username):
             content = clean_quotes(content)
         right_y = draw_wrapped_block(draw, right_x, right_y, title, content, header_font, body_font, col_width)
 
-    img.save(output_img)
+    img.save(output_path, "PNG")
+    print(f"✅ Reddit Persona image generated at: {output_path}")
