@@ -11,23 +11,56 @@ client = cohere.Client(COHERE_API_KEY)
 
 WRAP_WIDTH = 155  # Max characters per line
 
-def format_profile_output(raw_text):
-    """Format output with markdown-style headers and wrapped content."""
-    lines = raw_text.strip().splitlines()
-    formatted_lines = []
+# def format_profile_output(raw_text):
+#     """Format output with 'Key:' on its own line followed by wrapped content, matching Reddit persona style."""
+#     lines = raw_text.strip().splitlines()
+#     formatted_lines = []
+#     current_section = None
 
-    for line in lines:
-        stripped = line.strip()
-        if not stripped:
-            formatted_lines.append("")
-        elif stripped.endswith(":") and len(stripped.split()) < 5:
-            # Markdown-style heading
-            formatted_lines.append(f"\n### {stripped.rstrip(':')}\n")
+#     for line in lines:
+#         stripped = line.strip()
+#         if not stripped:
+#             continue
+#         # Detect section headings: e.g., "Bio:", "Summary:", etc.
+#         if stripped.endswith(":") and len(stripped.split()) < 5:
+#             current_section = stripped.rstrip(":")
+#             formatted_lines.append(f"{current_section}:\n")
+#         else:
+#             wrapped = textwrap.fill(stripped, width=WRAP_WIDTH)
+#             formatted_lines.append(wrapped + "\n")
+
+#     return "\n".join(formatted_lines)
+
+def format_profile_output(raw_text, username):
+    sections = {
+        "Name": "",
+        "Bio": "",
+        "Location": "",
+        "Development Interests": "",
+        "Open Source Involements": "",
+        "Technical Strengths": "",
+        "Collaboration Style": "",
+        "Notable Repositories": "",
+        "Summary": ""
+    }
+
+    current = None
+    for line in raw_text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        for key in list(sections.keys())[1:]:  # Skip "Name"
+            if line.lower().startswith(f"{key.lower()}:"):
+                current = key
+                line = line[len(key)+1:].strip()
+                sections[current] += line + "\n"
+                break
         else:
-            wrapped = textwrap.fill(stripped, width=WRAP_WIDTH)
-            formatted_lines.append(wrapped)
+            if current:
+                sections[current] += line + "\n"
 
-    return "\n".join(formatted_lines)
+    return sections
+
 
 def analyze_github_profile(username):
     print("🔍 Analyzing GitHub profile with Cohere...")
