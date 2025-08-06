@@ -2,6 +2,7 @@ import json
 import os
 import cohere
 import textwrap
+import re  # Added for regex parsing
 from dotenv import load_dotenv
 
 # Load API Key securely
@@ -11,55 +12,28 @@ client = cohere.Client(COHERE_API_KEY)
 
 WRAP_WIDTH = 155  # Max characters per line
 
-# def format_profile_output(raw_text):
-#     """Format output with 'Key:' on its own line followed by wrapped content, matching Reddit persona style."""
-#     lines = raw_text.strip().splitlines()
-#     formatted_lines = []
-#     current_section = None
-
-#     for line in lines:
-#         stripped = line.strip()
-#         if not stripped:
-#             continue
-#         # Detect section headings: e.g., "Bio:", "Summary:", etc.
-#         if stripped.endswith(":") and len(stripped.split()) < 5:
-#             current_section = stripped.rstrip(":")
-#             formatted_lines.append(f"{current_section}:\n")
-#         else:
-#             wrapped = textwrap.fill(stripped, width=WRAP_WIDTH)
-#             formatted_lines.append(wrapped + "\n")
-
-#     return "\n".join(formatted_lines)
-
 def format_profile_output(raw_text, username):
-    sections = {
-        "Name": "",
-        "Bio": "",
-        "Location": "",
-        "Development Interests": "",
-        "Open Source Involements": "",
-        "Technical Strengths": "",
-        "Collaboration Style": "",
-        "Notable Repositories": "",
-        "Summary": ""
-    }
+    # Expected sections for GitHub persona
+    sections = [
+        "Name", "Bio", "Location", "Development Interests", "Open Source Involvement",
+        "Technical Strengths", "Collaboration Style", "Notable Repositories", "Summary"
+    ]
+    section_map = {section: "" for section in sections}
 
-    current = None
-    for line in raw_text.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        for key in list(sections.keys())[1:]:  # Skip "Name"
-            if line.lower().startswith(f"{key.lower()}:"):
-                current = key
-                line = line[len(key)+1:].strip()
-                sections[current] += line + "\n"
-                break
-        else:
-            if current:
-                sections[current] += line + "\n"
+    for section in sections:
+        # Matches markdown headers like "## Bio" or "# Bio"
+        pattern = re.compile(
+            rf"#+\s*{re.escape(section)}\s*\n(.*?)(?=\n#+\s*\w+|\Z)",
+            re.DOTALL | re.IGNORECASE
+        )
+        match = pattern.search(raw_text)
+        if match:
+            section_map[section] = match.group(1).strip()
 
-    return sections
+    # Always use the GitHub username in the "Name" field
+    section_map["Name"] = username
+
+    return section_map
 
 
 def analyze_github_profile(username):
@@ -88,15 +62,25 @@ def analyze_github_profile(username):
     prompt = f"""
 You are an expert GitHub profile analyst. Based on the GitHub user's activity and public repositories, generate a detailed profile including these sections:
 
-- Name (Use GitHub username only: {username})
-- Bio
-- Location
-- Development Interests
-- Open Source Involvement
-- Technical Strengths
-- Collaboration Style
-- Notable Repositories (summarize briefly with impact)
-- Summary
+## Name
+(Use GitHub username only: {username})
+
+## Bio
+
+## Location
+
+## Development Interests
+
+## Open Source Involvement
+
+## Technical Strengths
+
+## Collaboration Style
+
+## Notable Repositories
+(Summarize briefly with impact)
+
+## Summary
 
 GitHub Bio: {bio}
 Location: {location}
@@ -113,17 +97,19 @@ Repositories:
             max_tokens=1500
         )
         raw_output = response.generations[0].text.strip()
+        #print("📄 Raw Cohere output:\n", raw_output)
 
         if not raw_output:
             print("❌ Empty response from Cohere.")
             return
 
-        formatted = format_profile_output(raw_output)
+        formatted = format_profile_output(raw_output, username)
 
         os.makedirs("Github/output/Script", exist_ok=True)
         output_path = f"Github/output/Script/{username}_github_profile.txt"
         with open(output_path, "w", encoding="utf-8") as f:
-            f.write(formatted)
+            for key, value in formatted.items():
+                f.write(f"{key}:\n{value.strip()}\n\n")
 
         print(f"✅ GitHub profile analysis saved to {output_path}")
     except Exception as e:

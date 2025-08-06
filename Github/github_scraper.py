@@ -38,6 +38,16 @@ def fetch_user_repos(username):
         page += 1
     return repos
 
+def fetch_repo_languages(full_name):
+    """Fetch all languages used in a repo."""
+    url = f"{GITHUB_API_BASE}/repos/{full_name}/languages"
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"⚠️ Could not fetch languages for {full_name}")
+        return {}
+
 def fetch_contribution_calendar(username):
     """Fetch GitHub contribution calendar data (last year)."""
     query = """
@@ -103,6 +113,7 @@ def get_basic_github_data(username):
                 "name": repo["name"],
                 "description": repo["description"],
                 "language": repo["language"],
+                "all_languages": fetch_repo_languages(repo["full_name"]),
                 "stars": repo["stargazers_count"],
                 "forks": repo["forks_count"],
                 "html_url": repo["html_url"]

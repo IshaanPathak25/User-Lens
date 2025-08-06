@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 import textwrap
+from Github.Charts.language import generate_language_pie_chart
 
 # === Configuration ===
 FONT_PATH = "arial.ttf"
@@ -179,3 +180,4 @@ def generate_visual_persona(username, output_path = None):
         
     img.save(output_path, "PNG")
     print(f"✅ GitHub Persona image generated at: {output_path}")
+    generate_language_pie_chart(username)

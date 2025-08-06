@@ -9,7 +9,7 @@
   "profile_url": "https://github.com/IshaanPathak25",
   "avatar_url": "https://avatars.githubusercontent.com/u/108518254?v=4",
   "contribution_calendar": {
-    "total_contributions": 205,
+    "total_contributions": 208,
     "daily_contributions": [
       {
         "date": "2024-08-04",
@@ -1478,6 +1478,10 @@
       {
         "date": "2025-08-05",
         "count": 0
+      },
+      {
+        "date": "2025-08-06",
+        "count": 3
       }
     ]
   },
@@ -1486,6 +1490,11 @@
       "name": "Chart-Generator",
       "description": "Created a real time chart generation website that allows the user to create various different types of charts according to their liking in real time",
       "language": "JavaScript",
+      "all_languages": {
+        "JavaScript": 5320,
+        "HTML": 1619,
+        "CSS": 1361
+      },
       "stars": 1,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/Chart-Generator"
@@ -1494,6 +1503,10 @@
       "name": "CompassionNet",
       "description": "A mini project made during the 2nd year of my college which enables people to donate various items and finances to desired NGOs.",
       "language": "HTML",
+      "all_languages": {
+        "HTML": 16953,
+        "CSS": 1475
+      },
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/CompassionNet"
@@ -1502,6 +1515,7 @@
       "name": "CPU-Scheduling-Algorithms",
       "description": "A repository containing the various CPU scheduling algorithm codes.",
       "language": null,
+      "all_languages": {},
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/CPU-Scheduling-Algorithms"
@@ -1510,6 +1524,11 @@
       "name": "CrowdGem",
       "description": null,
       "language": "JavaScript",
+      "all_languages": {
+        "JavaScript": 129027,
+        "TypeScript": 6083,
+        "CSS": 79
+      },
       "stars": 1,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/CrowdGem"
@@ -1518,6 +1537,9 @@
       "name": "Data-Structures-Codes",
       "description": "A repository containing all the important DSA codes.",
       "language": "C",
+      "all_languages": {
+        "C": 3706
+      },
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/Data-Structures-Codes"
@@ -1526,6 +1548,9 @@
       "name": "e-commerce-backend",
       "description": "A lightweight RESTful E-commerce backend built using Spring Boot, MongoDB, and JWT-based authentication. (Still in progress)",
       "language": "Java",
+      "all_languages": {
+        "Java": 25369
+      },
       "stars": 1,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/e-commerce-backend"
@@ -1534,6 +1559,10 @@
       "name": "InterVista",
       "description": "AI-based mock interview evaluator",
       "language": "JavaScript",
+      "all_languages": {
+        "JavaScript": 46403,
+        "CSS": 1507
+      },
       "stars": 1,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/InterVista"
@@ -1542,6 +1571,9 @@
       "name": "Leetcode-Solutions",
       "description": "A repository containing solutions of the Leetcode problems solved by me.",
       "language": "Java",
+      "all_languages": {
+        "Java": 55295
+      },
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/Leetcode-Solutions"
@@ -1550,6 +1582,9 @@
       "name": "ReddiScope",
       "description": "An intelligent tool for generating structured user personas from public Reddit profiles.   It uses the Reddit API to collect behavioral data and Cohere\u2019s LLMs to analyze tone, interests, and personality traits. Ideal for showcasing applied NLP, persona modeling, and AI-driven user insights in real-world scenarios.",
       "language": "Python",
+      "all_languages": {
+        "Python": 13269
+      },
       "stars": 1,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/ReddiScope"
@@ -1558,6 +1593,11 @@
       "name": "SpendWise",
       "description": "SpendWise is a modern full-stack Expense Tracker app to help users manage and visualize their income and expenses. Built with React (Vite) for a fast and responsive frontend, Node.js and Express for the backend, and MongoDB for secure data storage. Includes user authentication, charts, recent transactions, and Excel export support.",
       "language": "JavaScript",
+      "all_languages": {
+        "JavaScript": 84211,
+        "CSS": 1369,
+        "HTML": 361
+      },
       "stars": 2,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/SpendWise"
@@ -1566,6 +1606,11 @@
       "name": "User-Dashboard",
       "description": null,
       "language": "CSS",
+      "all_languages": {
+        "CSS": 12392,
+        "HTML": 8154,
+        "JavaScript": 2289
+      },
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/User-Dashboard"
@@ -1574,6 +1619,11 @@
       "name": "Web-Development",
       "description": "A collection of all the web dev mini projects created by me.",
       "language": "JavaScript",
+      "all_languages": {
+        "JavaScript": 99001,
+        "CSS": 90391,
+        "HTML": 61477
+      },
       "stars": 0,
       "forks": 0,
       "html_url": "https://github.com/IshaanPathak25/Web-Development"

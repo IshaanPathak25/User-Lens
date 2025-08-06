@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Analysis Result</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="static/style.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -12,14 +12,15 @@
         <h1>📊 Analysis Result</h1>
         <pre>{{ result }}</pre>
 
-        <!-- Back to home -->
-        <a href="/">🔙 Back to Home</a>
-
         <!-- Button to download persona image -->
         <form method="POST" action="{{ url_for('download_persona') }}">
           <input type="hidden" name="username" value="{{ username }}">
           <input type="hidden" name="platform" value="{{ platform.lower() }}">
-          <button type="submit" class="download-btn">⬇️ Download Persona Image</button>
+
+          <div class="button-group">
+            <button type="submit" class="download-btn">⬇️ Download Persona Image</button>
+            <button type="button" class="back-btn" onclick="window.location.href='/'">🔙 Back to Home</button>
+          </div>
         </form>
       </div>
     </div>
