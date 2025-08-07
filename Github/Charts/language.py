@@ -28,15 +28,37 @@ def generate_language_pie_chart(username):
     labels = list(sorted_langs.keys())
     sizes = list(sorted_langs.values())
 
-    # Create Pie Chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=140)
-    plt.axis("equal")  # Equal aspect ratio = circle
+    # Create Pie Chart (solid circle)
+    fig, ax = plt.subplots(figsize=(8, 8))
+    wedges, texts, autotexts = ax.pie(
+        sizes,
+        labels=None,  # Remove direct labels from slices to avoid clutter
+        autopct="%1.1f%%",
+        startangle=140,
+        pctdistance=0.85,
+    )
+
+    ax.axis("equal")
     plt.title(f"{username}'s Language Usage", fontsize=14)
 
-    # Save to file
+    # Add a legend to map colors → languages
+    ax.legend(
+        wedges,
+        labels,
+        title="Languages",
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        fontsize=10,
+    )
+
+    # Tidy up layout and save
+    plt.tight_layout()
     chart_path = os.path.join(output_dir, f"{username}_language_chart.png")
     plt.savefig(chart_path, bbox_inches="tight")
     plt.close()
 
     print(f"✅ Language pie chart saved to {chart_path}")
+
+if __name__ == "__main__":
+    print("🚀 Running test chart generation...")
+    generate_language_pie_chart("IshaanPathak25")
