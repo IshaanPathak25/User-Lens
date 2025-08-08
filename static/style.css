@@ -151,3 +151,16 @@ a {
     font-size: 0.9rem;
   }
 }
+
+.chart-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.chart-container img {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 5px;
+  background: #fff;
+}

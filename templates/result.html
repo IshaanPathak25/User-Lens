@@ -4,13 +4,20 @@
     <meta charset="UTF-8" />
     <title>Analysis Result</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="static/style.css" />
+    <link rel="stylesheet" href="/static/style.css">
+
   </head>
   <body>
     <div class="wrapper">
       <div class="container">
         <h1>📊 Analysis Result</h1>
         <pre>{{ result }}</pre>
+
+        <!-- Language Usage Chart -->
+        <div class="chart-container">
+          <h3>Language Usage</h3>
+          <img id="languageChart" alt="Language Pie Chart" />
+        </div>
 
         <!-- Button to download persona image -->
         <form method="POST" action="{{ url_for('download_persona') }}">
@@ -24,5 +31,10 @@
         </form>
       </div>
     </div>
+
+    <script>
+      const username = "{{ username }}";
+      document.getElementById("languageChart").src = `/github/${username}/language_chart`;
+    </script>
   </body>
 </html>

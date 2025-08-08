@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-import os
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask import send_file
 from Reddit.main import run_reddit_pipeline
 from Github.main import run_github_pipeline
 from jinja2 import StrictUndefined
+from Github.Charts.language import generate_language_pie_chart
+import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
@@ -90,8 +91,22 @@ def download_persona():
     except Exception as e:
         flash(f"❌ Failed to download persona image: {e}")
         return redirect(url_for("home"))
+    
+# GitHub Charts
 
+@app.route("/github/<username>/language_chart", methods=["GET"])
+def get_language_chart(username):
+    try:
+        chart_path = f"Github/output/Graphics/{username}_language_chart.png"
+        
+        # Generate chart if it doesn't exist
+        if not os.path.exists(chart_path):
+            generate_language_pie_chart(username)
+
+        return send_file(chart_path, mimetype="image/png")
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
-    

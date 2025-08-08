@@ -14,8 +14,10 @@ HEADERS = {
     "Accept": "application/vnd.github+json"
 } if GITHUB_TOKEN else {}
 
+# ---------------------------
+# Existing functions unchanged
+# ---------------------------
 def fetch_user_profile(username):
-    """Fetch basic profile information for a given GitHub username."""
     url = f"{GITHUB_API_BASE}/users/{username}"
     response = requests.get(url, headers=HEADERS)
     if response.status_code != 200:
@@ -23,7 +25,6 @@ def fetch_user_profile(username):
     return response.json()
 
 def fetch_user_repos(username):
-    """Fetch list of public repositories for a given GitHub user."""
     repos = []
     page = 1
     while True:
@@ -39,7 +40,6 @@ def fetch_user_repos(username):
     return repos
 
 def fetch_repo_languages(full_name):
-    """Fetch all languages used in a repo."""
     url = f"{GITHUB_API_BASE}/repos/{full_name}/languages"
     response = requests.get(url, headers=HEADERS)
     if response.status_code == 200:
@@ -49,7 +49,6 @@ def fetch_repo_languages(full_name):
         return {}
 
 def fetch_contribution_calendar(username):
-    """Fetch GitHub contribution calendar data (last year)."""
     query = """
     query($login: String!) {
       user(login: $login) {
@@ -91,11 +90,40 @@ def fetch_contribution_calendar(username):
         ]
     }
 
+# ---------------------------
+# NEW: Fetch PR & Issue counts
+# ---------------------------
+def fetch_pull_requests_count(username):
+    url = f"{GITHUB_API_BASE}/search/issues?q=author:{username}+type:pr"
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json().get("total_count", 0)
+    else:
+        print(f"⚠️ Could not fetch pull requests for {username}")
+        return 0
+
+def fetch_issues_count(username):
+    url = f"{GITHUB_API_BASE}/search/issues?q=author:{username}+type:issue"
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json().get("total_count", 0)
+    else:
+        print(f"⚠️ Could not fetch issues for {username}")
+        return 0
+
+# ---------------------------
+# Modified main data fetcher
+# ---------------------------
 def get_basic_github_data(username):
-    """Returns summarized GitHub data for a user."""
     profile = fetch_user_profile(username)
     repos = fetch_user_repos(username)
     calendar = fetch_contribution_calendar(username)
+
+    stars_total = sum(repo["stargazers_count"] for repo in repos)
+    forks_total = sum(repo["forks_count"] for repo in repos)
+
+    pull_requests_total = fetch_pull_requests_count(username)
+    issues_total = fetch_issues_count(username)
 
     return {
         "username": username,
@@ -108,6 +136,10 @@ def get_basic_github_data(username):
         "profile_url": profile.get("html_url"),
         "avatar_url": profile.get("avatar_url"),
         "contribution_calendar": calendar,
+        "total_stars": stars_total,
+        "total_forks": forks_total,
+        "total_pull_requests": pull_requests_total,
+        "total_issues": issues_total,
         "repos": [
             {
                 "name": repo["name"],
@@ -123,7 +155,6 @@ def get_basic_github_data(username):
     }
 
 def save_github_data(username):
-    """Fetch and save GitHub data to data/{username}.json"""
     print(f"📥 Fetching GitHub data for user: {username}...")
     user_data = get_basic_github_data(username)
 
