@@ -4,6 +4,7 @@ from Reddit.main import run_reddit_pipeline
 from Github.main import run_github_pipeline
 from jinja2 import StrictUndefined
 from Github.Charts.language import generate_language_pie_chart
+from Github.Charts.monthly_contribution_line import generate_monthly_chart
 import os
 
 app = Flask(__name__)
@@ -107,6 +108,15 @@ def get_language_chart(username):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# Monthly Contribution Line Chart
+
+@app.route("/github/<username>/monthly_chart")
+def github_monthly_chart(username):
+    result = generate_monthly_chart(username)
+    if result is None:
+        return "No monthly data found", 404
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -5,7 +5,6 @@
     <title>Analysis Result</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/style.css">
-
   </head>
   <body>
     <div class="wrapper">
@@ -17,6 +16,18 @@
         <div class="chart-container">
           <h3>Language Usage</h3>
           <img id="languageChart" alt="Language Pie Chart" />
+        </div>
+
+        <!-- Repo Stars Chart -->
+        <div class="chart-container">
+          <h3>Repo Stars</h3>
+          <img id="repoStarsChart" alt="Repo Stars Chart" />
+        </div>
+
+        <!-- Monthly Contributions Line Chart -->
+        <div class="chart-container">
+          <h3>Monthly Contributions</h3>
+          <img id="monthlyContributionLine" alt="Monthly Contributions Line Chart" />
         </div>
 
         <!-- Button to download persona image -->
@@ -35,6 +46,8 @@
     <script>
       const username = "{{ username }}";
       document.getElementById("languageChart").src = `/github/${username}/language_chart`;
+      document.getElementById("repoStarsChart").src = `/github/${username}/repo_stars_chart`;
+      document.getElementById("monthlyContributionLine").src = `/github/${username}/monthly_contribution_line`;
     </script>
   </body>
 </html>
