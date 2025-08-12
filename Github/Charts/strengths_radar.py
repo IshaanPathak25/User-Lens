@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-def generate_radar_chart_with_percentages(username):
+def radar_chart(username):
     # Paths
     json_path = f"GitHub/data/{username}.json"
     output_dir = "GitHub/output/Graphics"
@@ -80,4 +80,4 @@ def generate_radar_chart_with_percentages(username):
     print(f"[INFO] Radar chart saved to {output_path}")
 
 if __name__ == "__main__":
-    generate_radar_chart_with_percentages("IshaanPathak25")
+    radar_chart("IshaanPathak25")

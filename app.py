@@ -110,13 +110,22 @@ def get_language_chart(username):
         return jsonify({"error": str(e)}), 500
     
 # Monthly Contribution Line Chart
+@app.route("/github/<username>/monthly_contribution_line")
+def github_monthly_contribution_line(username):
+    try:
+        chart_path = f"Github/output/Graphics/{username}_monthly_contribution_line.png"
+        
+        # Generate chart if it doesn't exist
+        if not os.path.exists(chart_path):
+            generate_monthly_chart(username)
 
-@app.route("/github/<username>/monthly_chart")
-def github_monthly_chart(username):
-    result = generate_monthly_chart(username)
-    if result is None:
-        return "No monthly data found", 404
-    return result
+        if not os.path.exists(chart_path):
+            return "No monthly data found", 404
 
+        return send_file(chart_path, mimetype="image/png")
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == "__main__":
     app.run(debug=True)
